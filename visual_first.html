@@ -128,27 +128,27 @@ var soundCheckInstructions = {
             };
  timeline.push(soundCheckInstructions)
 
- var pre_if_trial = {
-            type: 'video-keyboard-response',
+var pre_if_trial = {
+            type: 'video-button-response',
             stimulus: ['video/AuditoryBaVisualBa.mp4'],
             width: 800,
             prompt:
-                '<p>Press any key to repeat the video and adjust your volume as necessary. When you are ready to continue, press C.</p>'
-        };
- timeline.push(pre_if_trial)       
+                '<p>Press the repeat button to replay the video as you adjust your volume. When you are satisfied with your audio level, press continue.</p>',
+            choices: ['Repeat', 'Continue']
+        }    
 
  var loop_node = {
-            timeline: [pre_if_trial],
+    timeline: [pre_if_trial],
             loop_function: function(data){
-                if('c' == data.values()[0].response){
-                    return false;
+                if(data.values()[0].response==0){
+                    return true;
                 }
                 else {
-                    return true;
+                    return false;
                 }
             }
         };
-timeline.push(loop_node)   
+    timeline.push(loop_node);
 
     var preload = {
         type: 'preload',
