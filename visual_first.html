@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>McGurk Experiment</title>
+        <script src="jspsych-6.3.1/jspsych.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-external-html.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-virtual-chinrest.js"></script>
+        <script src="jspsych-6.3.1/examples/js/webgazer/webgazer.js"></script>
+        <script src="jspsych-6.3.1/extensions/jspsych-ext-webgazer.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-webgazer-init-camera.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-video-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-video-button-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-html-slider-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+        <script src= "jspsych-6.3.1/plugins/jspsych-webgazer-calibrate.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-webgazer-validate.js"></script>
+        <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+    </head>
+    <body></body>
+    <script>
+
+var timeline= []
+
+    var welcome = {
+      type: 'html-keyboard-response',
+      stimulus: "Welcome to the experiment. Press any key to begin."
+    };
+    timeline.push(welcome)
+
+    var browser = {
+            type: 'instructions',
+            pages: ['Please complete this experiment using <strong>Google Chrome or Firefox</strong>. ' +
+                    'If you are not using Google Chrome or Firefox, please close the experiment and ' +
+                    'reopen it in one of the suggested browsers.'],
+                show_clickable_nav: true
+                }; 
+        timeline.push(browser)
+
+var distance_ref = {
+            type: "image-keyboard-response",
+            stimulus: "img/arm.png",
+            prompt: "<p>Throughout the duration of the experiment, please sit at an arm's distance " +
+                    "from your computer screen, as illustrated above. Additionally, please focus your " +
+                    "attention to the center of your screen.</p>" +
+                    "<p> Once you have done so, press any key to continue.</p>",
+        };
+timeline.push(distance_ref)     
+
+    var cameraWarning = {
+            type: 'instructions',
+            pages: [
+                'Soon, the experiment will request access to your camera. Please grant it permission when prompted. ' +
+                       'The <b>only</b> webcam data collected will be the region of the screen you are looking at. ' +
+                       'Neither images nor recordings will be collected. ' ,
+                'Once granting webcam access, please allow a few minutes for the experiment to load. ' +
+                       'Please do <b>NOT</b> refresh or exit the experiment while it is waiting, as this will reset ' +
+                       'your progress to the starting page.',
+    ],
+show_clickable_nav: true
+};
+timeline.push(cameraWarning)
+
+var cameraInit = {
+            type: 'webgazer-init-camera',
+            extensions: [{type: 'webgazer',
+                          params: {
+                              targets: ['#jspsych-video-button-response-stimulus']
+                          }
+                        }],
+            instructions: `<p>Using the video above as a guide, please center your face in the box and position your head so that the webcam has a clear image of your eyes.</p>
+            <p>It is very important that you carefully maintain this position for the duration of the experiment, so please take a moment to adjust your setup as needed.</p>
+            <p>When ready, move your face to the center of the box and look directly towards the camera.</p>
+            <p>When your face is properly positioned, the box will turn green and you can click the button below to continue.</p>
+            <p>Reminder: the <b>ONLY</b> webcam data collected is the point on the screen you are looking at. No images or recordings will ever leave your computer.</p>`
+        };
+timeline.push(cameraInit)
+
+var chinrest = {
+            type: "virtual-chinrest",
+            stimulus: "img/card.png",
+            blindspot_reps: 3,
+            resize_units: "none",
+            pixels_per_unit: 50,
+        };
+timeline.push(chinrest)
+
+var survey = {
+            type: "survey-text",
+            questions: [
+                {prompt: "How old are you?",
+                    required: true,
+                    name: "Age"}
+            ]
+        };
+timeline.push(survey)
+
+var sex_options = ["Male", "Female", "Intersex", "Prefer not to answer"];
+        var sex = {
+            type: "survey-multi-choice",
+            questions: [
+                {prompt:"What is your sex assigned at birth?",
+                    name: "Sex",
+                    options: sex_options,
+                    required:true}
+            ]
+        };
+timeline.push(sex)        
+
+var introInstructions = {
+            type: 'instructions',
+            pages: ['Thank you for your participation in this experiment. Please read the instructions entirely before you begin.'],
+            show_clickable_nav: true
+            };
+timeline.push(introInstructions)
+
+var soundCheckInstructions = {
+            type: 'instructions',
+            pages: ['For the duration of the experiment, please use headphones or turn your speakers ' +
+                       'up to a comfortable volume. Please use the following screen as an opportunity ' +
+                       'to check your audio settings and adjust the sound as necessary. '],
+            show_clickable_nav: true
+            };
+ timeline.push(soundCheckInstructions)
+
+ var pre_if_trial = {
+            type: 'video-keyboard-response',
+            stimulus: ['video/AuditoryBaVisualBa.mp4'],
+            width: 800,
+            prompt:
+                '<p>Press any key to repeat the video and adjust your volume as necessary. When you are ready to continue, press C.</p>'
+        };
+ timeline.push(pre_if_trial)       
+
+ var loop_node = {
+            timeline: [pre_if_trial],
+            loop_function: function(data){
+                if('c' == data.values()[0].response){
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        };
+timeline.push(loop_node)   
+
+    var preload = {
+        type: 'preload',
+        video: ['video']
+    }
+    timeline.push(preload);
+
+   var practiceInstructions = {
+    type: 'instructions',
+    pages: ['Before the experiment begins, we will conduct some practice trials. '+
+                    'These trials are only for practice and your responses will not be recorded.'],
+    show_clickable_nav: true
+};
+timeline.push(practiceInstructions);
+
+var auditoryInstructions = {
+    type: 'html-keyboard-response',
+    stimulus: 'For the first eight practice trials, you will report which <strong>auditory</strong> syllable you perceive. '+
+                'Press any key to begin.',
+};
+timeline.push(auditoryInstructions);
+
+var auditoryPractice = {
+        timeline: [
+        {type: 'video-button-response',
+        stimulus: jsPsych.timelineVariable('video'),
+        width: 800,
+        choices: [],
+        data: jsPsych.timelineVariable('video'),
+        trial_ends_after_video: true,
+        prompt: "<p></p>",
+        },
+        {type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which auditory syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        }
+    ],   
+    timeline_variables: [
+        { video: ['video/AuditoryMaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ma', 'Ta', 'Na', 'La'],1) },
+        { video: ['video/AuditoryBaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ta', 'Pa', 'Da'],1) },
+        { video: ['video/AuditoryBaVisualKa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ka', 'Ga', 'Da'],1) },
+        { video: ['video/AuditoryPaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Da', 'Ka', 'Ta'],1) },
+        { video: ['video/AuditoryNaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Na', 'Da', 'Ka', 'Ma'],1) },
+        { video: ['video/AuditoryPaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Ta', 'Ka', 'Da'],1) },
+        { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
+        { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
+    ],
+    random_order: false,
+    repetitions: 0
+    };
+timeline.push(auditoryPractice);
+
+var visualInstructions = {
+    type: 'html-keyboard-response',
+    stimulus: 'For the last eight practice trials, you will report which <strong>visual</strong> syllable you perceive.'+
+                'Press any key to begin.',
+};
+timeline.push(visualInstructions);
+
+var visualPractice = {
+    timeline: [
+        {type: 'video-button-response',
+        stimulus: jsPsych.timelineVariable('video'),
+        width: 800,
+        choices: [],
+        data: jsPsych.timelineVariable('video'),
+        trial_ends_after_video: true,
+        prompt: "<p></p>",
+},
+{type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which visual syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        }
+    ],
+    timeline_variables: [
+        { video: ['video/AuditoryMaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ma', 'Ta', 'Na', 'La'],1) },
+        { video: ['video/AuditoryBaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ta', 'Pa', 'Da'],1) },
+        { video: ['video/AuditoryBaVisualKa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ka', 'Ga', 'Da'],1) },
+        { video: ['video/AuditoryPaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Da', 'Ka', 'Ta'],1) },
+        { video: ['video/AuditoryNaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Na', 'Da', 'Ka', 'Ma'],1) },
+        { video: ['video/AuditoryPaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Ta', 'Ka', 'Da'],1) },
+        { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
+        { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
+    ],
+    random_order: false,
+    repetitions: 0
+    };
+timeline.push(visualPractice);
+
+var trialInstructions = {
+    type: 'instructions',
+    pages: [
+        'Great work! Now that you have completed the practice trials, we are ready to begin the first part of the experiment. ' +
+                    'Please be sure that you are seated arm\'s distance from your screen. ' +
+                    '<strong>Your responses will now be recorded.</strong>',
+                    'For this experiment, like with the practice trials, you will view a series of videos of a woman pronouncing a syllable. ' +
+                    'For each video, you will record both what <strong>visual</strong> and <strong>auditory</strong> syllables you perceive. ' +
+                    'Following each response, you will rank how confident you are in your answer on a scale from 0 (no confidence) to 100 (fully confident). ' +
+                    'The experiment will be conducted in two blocks, with each block separated by a break period. ' +
+                    'Please press next when you are ready to begin the experiment.'
+                ],
+                show_clickable_nav: true             
+};
+timeline.push(trialInstructions);
+
+    var mcGurktrial = {
+        timeline: [
+        {type: 'video-button-response',
+        stimulus: jsPsych.timelineVariable('video'),
+        width: 800,
+        choices: [],
+        data: jsPsych.timelineVariable('video'),
+        trial_ends_after_video: true,
+        prompt: "<p></p>",
+        extensions: [{type: 'webgazer',
+                          params: {
+                              targets: ['#jspsych-video-button-response-stimulus']
+                          }
+                        }],
+        },
+    {type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which visual syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        },
+    {type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which auditory syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        }
+    ],
+    timeline_variables: [
+        { video: ['video/AuditoryMaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ma', 'Ta', 'Na', 'La'],1) },
+        { video: ['video/AuditoryBaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ta', 'Pa', 'Da'],1) },
+        { video: ['video/AuditoryBaVisualKa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ka', 'Ga', 'Da'],1) },
+        { video: ['video/AuditoryPaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Da', 'Ka', 'Ta'],1) },
+    ],
+    random_order: true,
+    repetitions: 5
+    };
+    timeline.push(mcGurktrial);
+
+    var mcGurkEnd = {
+        type: 'html-keyboard-response',
+        stimulus: 'You have completed the first portion of this experiment! Please use this screen to take a break. ' +
+                    'Press any key when you are ready to continue to the next portion of the experiment.'
+    };
+timeline.push(mcGurkEnd);
+
+
+    var incongTrial = {
+        timeline: [
+        {type: 'video-button-response',
+        stimulus: jsPsych.timelineVariable('video'),
+        width: 800,
+        choices: [],
+        data: jsPsych.timelineVariable('video'),
+        trial_ends_after_video: true,
+        prompt: "<p></p>",
+        extensions: [{type: 'webgazer',
+                          params: {
+                              targets: ['#jspsych-video-button-response-stimulus']
+                          }
+                        }],
+        },
+    {type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which visual syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        },
+    {type: 'video-button-response',
+        stimulus: [],
+        width: 800,
+        choices: jsPsych.timelineVariable('syllables'),
+        data: jsPsych.timelineVariable('syllables'),
+        trial_ends_after_video: true,
+        prompt: "<p>Which auditory syllable did you perceive?</p>"
+        },
+    { type: 'html-slider-response',
+                    stimulus: '<p>How confident are you in your answer?</p>',
+                    labels: ['0','25','50','75','100'],
+                    min: 0,
+                    max: 100,
+                    start: function(){
+                        return jsPsych.randomization.sampleWithoutReplacement([10, 20, 30, 40, 50, 60, 70, 80, 90], 1)[0];},
+                    step: 1,
+                    prompt: "<p>Rate confidence from 0 (no confidence) to 100 (fully confident)</p>",
+                    require_movement:true
+        }
+    ],
+    timeline_variables: [
+        { video: ['video/AuditoryNaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Na', 'Da', 'Ka', 'Ma'],1) },
+        { video: ['video/AuditoryPaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Ta', 'Ka', 'Da'],1) },
+        { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
+        { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
+    ],
+    random_order: true,
+    repetitions: 5
+    };
+    timeline.push(incongTrial);
+
+    var calibration_instructions = {
+                    type: 'html-keyboard-response',
+                    stimulus: `<p>The following event will calibrate our eyetracking. Please focus on dots as they appear, and then left-click each one with your mouse.</p>`
+                };
+    timeline.push(calibration_instructions);
+
+    var calibration = { 
+        type: 'webgazer-calibrate',
+                    calibration_points: [
+                        [20,10], [20,50], [20,90],
+                        [50,10], [50,50], [50,90],
+                        [80,10], [80,50], [80,90]
+                    ]
+                };
+    timeline.push(calibration);            
+
+    var validation_instructions = {
+        type: 'html-keyboard-response',
+        stimulus: `<p>The following event will test the accuracy of our eye tracking. Please focus on the black dots as they appear. Press any key to begin.</p>`
+    };
+    timeline.push(validation_instructions);
+
+    var validation = {
+        type: 'webgazer-validate',
+                    validation_points: [
+                        [20,10], [20,50], [20,90],
+                        [50,10], [50,50], [50,90],
+                        [80,10], [80,50], [80,90]
+                    ]
+    };
+    timeline.push(validation);
+
+    var conclusion = {
+        type: 'html-keyboard-response',
+        stimulus: 'This concludes the experiment. Thank you for participating.'
+    };
+    timeline.push (conclusion);
+
+    jsPsych.init({timeline: timeline, 
+        extensions: [{type: 'webgazer'}]
+    });
+
+    </script>
+</html>
