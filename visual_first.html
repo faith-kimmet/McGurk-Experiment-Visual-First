@@ -166,7 +166,7 @@ timeline.push(practiceInstructions);
 
 var auditoryInstructions = {
     type: 'html-keyboard-response',
-    stimulus: 'For the first eight practice trials, you will report which <strong>auditory</strong> syllable you perceive. '+
+    stimulus: 'For the first five practice trials, you will report which <strong>auditory</strong> syllable you perceive. '+
                 'Press any key to begin.',
 };
 timeline.push(auditoryInstructions);
@@ -211,14 +211,17 @@ var auditoryPractice = {
         { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
         { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
     ],
-    random_order: false,
+    sample: {
+        type: 'without-replacement',
+        size: 5
+    },
     repetitions: 0
     };
 timeline.push(auditoryPractice);
 
 var visualInstructions = {
     type: 'html-keyboard-response',
-    stimulus: 'For the last eight practice trials, you will report which <strong>visual</strong> syllable you perceive.'+
+    stimulus: 'For the last five practice trials, you will report which <strong>visual</strong> syllable you perceive.'+
                 'Press any key to begin.',
 };
 timeline.push(visualInstructions);
@@ -263,7 +266,10 @@ var visualPractice = {
         { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
         { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
     ],
-    random_order: false,
+    sample: {
+        type: 'without-replacement',
+        size: 5
+    },
     repetitions: 0
     };
 timeline.push(visualPractice);
