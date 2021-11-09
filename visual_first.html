@@ -27,6 +27,18 @@
 
 var timeline= []
 
+var preloadImg= {
+type: 'preload',
+images: ['img/arm.png','img/card.png']
+};
+timeline.push(preloadImg)
+
+var preloadVid= {
+  type: 'preload',
+  video: ['video/AuditoryMaVisualTa.mp4','video/AuditoryBaVisualTa.mp4','video/AuditoryBaVisualKa.mp4','video/AuditoryPaVisualDa.mp4','video/AuditoryNaVisualDa.mp4','video/AuditoryPaVisualTa.mp4','video/AuditoryGaVisualTa.mp4','video/AuditoryTaVisualMa.mp4']
+};
+timeline.push(preloadVid)
+
     var welcome = {
       type: 'html-keyboard-response',
       stimulus: "Welcome to the experiment. Press any key to begin."
@@ -149,12 +161,6 @@ var pre_if_trial = {
             }
         };
     timeline.push(loop_node);
-
-    var preload = {
-        type: 'preload',
-        video: ['video']
-    }
-    timeline.push(preload);
 
    var practiceInstructions = {
     type: 'instructions',
