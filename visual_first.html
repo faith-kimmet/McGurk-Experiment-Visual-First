@@ -366,9 +366,13 @@ timeline.push(trialInstructions);
         { video: ['video/AuditoryBaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ta', 'Pa', 'Da'],1) },
         { video: ['video/AuditoryBaVisualKa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ka', 'Ga', 'Da'],1) },
         { video: ['video/AuditoryPaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Da', 'Ka', 'Ta'],1) },
+        { video: ['video/AuditoryNaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Na', 'Da', 'Ka', 'Ma'],1) },
+        { video: ['video/AuditoryPaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Ta', 'Ka', 'Da'],1) },
+        { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
+        { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
     ],
     random_order: true,
-    repetitions: 5
+    repetitions: 8
     };
     timeline.push(mcGurktrial);
 
@@ -435,13 +439,17 @@ timeline.push(mcGurkEnd);
         }
     ],
     timeline_variables: [
+        { video: ['video/AuditoryMaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ma', 'Ta', 'Na', 'La'],1) },
+        { video: ['video/AuditoryBaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ta', 'Pa', 'Da'],1) },
+        { video: ['video/AuditoryBaVisualKa.mp4'], syllables: jsPsych.randomization.repeat(['Ba', 'Ka', 'Ga', 'Da'],1) },
+        { video: ['video/AuditoryPaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Da', 'Ka', 'Ta'],1) },
         { video: ['video/AuditoryNaVisualDa.mp4'], syllables: jsPsych.randomization.repeat(['Na', 'Da', 'Ka', 'Ma'],1) },
         { video: ['video/AuditoryPaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Pa', 'Ta', 'Ka', 'Da'],1) },
         { video: ['video/AuditoryGaVisualTa.mp4'], syllables: jsPsych.randomization.repeat(['Ga', 'Ta', 'Ka', 'Na'],1) },
         { video: ['video/AuditoryTaVisualMa.mp4'], syllables: jsPsych.randomization.repeat(['Ta', 'Ma', 'Pa', 'Da'],1) },
     ],
     random_order: true,
-    repetitions: 5
+    repetitions: 7
     };
     timeline.push(incongTrial);
 
