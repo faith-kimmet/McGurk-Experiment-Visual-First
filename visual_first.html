@@ -54,7 +54,7 @@ timeline.push(preloadVid)
       type: 'html-keyboard-response',
       stimulus: "Thank you for your participation. Press any key to begin."
     };
-timeline.push(welcome)
+    timeline.push(welcome)
 
     var browser = {
             type: 'instructions',
@@ -73,14 +73,14 @@ var distance_ref = {
                     "attention to the center of your screen.</p>" +
                     "<p> Once you have done so, press any key to continue.</p>",
         };
-timeline.push(distance_ref)    
-        
+timeline.push(distance_ref)
+
 var chinrest = {
-    type: "virtual-chinrest",
-    stimulus: "img/card.png",
-    blindspot_reps: 3,
-    resize_units: "none",
-    pixels_per_unit: 50,
+            type: "virtual-chinrest",
+            stimulus: "img/card.png",
+            blindspot_reps: 3,
+            resize_units: "none",
+            pixels_per_unit: 50,
         };
 timeline.push(chinrest)
 
@@ -151,7 +151,7 @@ var soundCheckInstructions = {
             };
  timeline.push(soundCheckInstructions)
 
-var pre_if_trial = {
+ var pre_if_trial = {
             type: 'video-button-response',
             stimulus: ['video/AuditoryBaVisualBa.mp4'],
             width: 800,
@@ -176,7 +176,9 @@ var pre_if_trial = {
    var practiceInstructions = {
     type: 'instructions',
     pages: ['Before the experiment begins, we will conduct some practice trials. '+
-                    'These trials are only for practice and your responses will not be recorded.'],
+                    'These trials are only for practice and your responses will not be recorded. '+
+                    'From now on, please proceed as quickly and accurately as possible.'
+                ],
     show_clickable_nav: true
 };
 timeline.push(practiceInstructions);
@@ -238,7 +240,7 @@ timeline.push(auditoryPractice);
 
 var visualInstructions = {
     type: 'html-keyboard-response',
-    stimulus: 'For the last five practice trials, you will report which <strong>visual</strong> syllable you perceive.'+
+    stimulus: 'For the last five practice trials, you will report which <strong>visual</strong> syllable you perceive. '+
                 'Press any key to begin.',
 };
 timeline.push(visualInstructions);
@@ -484,17 +486,18 @@ timeline.push(mcGurkEnd);
                     ]
     };
     timeline.push(validation);
-
+    
     var conclusion = {
-        type: 'html-keyboard-response',
-        stimulus: `<p>This concludes the experiment. Thank you for participating.</p>
-        <p><a href="https://app.prolific.co/submissions/complete?cc=46AD0359">Click here to return to Prolific and complete the study</a>.</p>`,
-        choices: "NO_KEYS"
+      type: 'html-keyboard-response',
+      stimulus: `<p>This concludes the experiment. Thank you for participating.</p>`,
+      choices: "NO_KEYS"
     };
-    timeline.push (conclusion);
 
     jsPsych.init({timeline: timeline, 
-        extensions: [{type: 'webgazer'}]
+        on_finish: function(){
+          window.top.location.href= "https://app.prolific.co/submissions/complete?cc=57F910B7"
+        },
+    extensions: [{type: 'webgazer'}]
     });
 
     </script>
