@@ -25,6 +25,8 @@
     <body></body>
     <script>
         
+const WEBGAZER_TARGET_CSS_ID = '#jspsych-video-button-response-stimulus';
+
 var subject_id= jsPsych.data.getURLVariable('PROLIFIC_PID');
 var study_id= jsPsych.data.getURLVariable('STUDY_ID');
 var session_id= jsPsych.data.getURLVariable('SESSION_ID');
@@ -50,13 +52,13 @@ var preloadVid= {
 };
 timeline.push(preloadVid)
 
-    var welcome = {
+var welcome = {
       type: 'html-keyboard-response',
       stimulus: "Thank you for your participation. Press any key to begin."
     };
     timeline.push(welcome)
 
-    var browser = {
+var browser = {
             type: 'instructions',
             pages: ['Please complete this experiment using <strong>Google Chrome or Firefox</strong>. ' +
                     'If you are not using Google Chrome or Firefox, please close the experiment and ' +
@@ -112,6 +114,45 @@ var cameraInit = {
             <p>Reminder: the <b>ONLY</b> webcam data collected is the point on the screen you are looking at. No images or recordings will ever leave your computer.</p>`
         };
 timeline.push(cameraInit)
+
+var calibration_instructions = {
+                    type: 'html-keyboard-response',
+                    stimulus: `<p>The following event will calibrate our eyetracking. Please focus on dots as they appear, and then left-click each one with your mouse. Press any key to begin.</p>`
+                };
+    timeline.push(calibration_instructions);
+
+    var calibration = { 
+        type: 'webgazer-calibrate',
+                    calibration_points: [
+                        [20,10], [20,50], [20,90],
+                        [50,10], [50,50], [50,90],
+                        [80,10], [80,50], [80,90]
+                    ]
+                };
+    timeline.push(calibration);            
+
+  var validation_instructions = {
+        type: 'html-keyboard-response',
+        stimulus: `<p>The following event will test the accuracy of our eye tracking. Please focus on the black dots as they appear. Press any key to begin.</p>`
+    };
+    timeline.push(validation_instructions);
+
+    var validation = {
+        type: 'webgazer-validate',
+                    validation_points: [
+                        [20,10], [20,50], [20,90],
+                        [50,10], [50,50], [50,90],
+                        [80,10], [80,50], [80,90]
+                    ]
+    };
+    timeline.push(validation);
+
+var briefing = {
+  type: 'html-keyboard-response',
+  stimulus: "Before we begin, we would like to ask you a few questions. "+ 
+            "Press any key to continue."
+};
+timeline.push(briefing)
 
 var survey = {
             type: "survey-text",
@@ -320,7 +361,7 @@ timeline.push(trialInstructions);
         prompt: "<p></p>",
         extensions: [{type: 'webgazer',
                           params: {
-                              targets: ['#jspsych-video-button-response-stimulus']
+                              targets: [WEBGAZER_TARGET_CSS_ID]
                           }
                         }],
         },
@@ -397,7 +438,7 @@ timeline.push(mcGurkEnd);
         prompt: "<p></p>",
         extensions: [{type: 'webgazer',
                           params: {
-                              targets: ['#jspsych-video-button-response-stimulus']
+                              targets: [WEBGAZER_TARGET_CSS_ID]
                           }
                         }],
         },
@@ -454,38 +495,6 @@ timeline.push(mcGurkEnd);
     repetitions: 7
     };
     timeline.push(incongTrial);
-
-    var calibration_instructions = {
-                    type: 'html-keyboard-response',
-                    stimulus: `<p>The following event will calibrate our eyetracking. Please focus on dots as they appear, and then left-click each one with your mouse. Press any key to begin.</p>`
-                };
-    timeline.push(calibration_instructions);
-
-    var calibration = { 
-        type: 'webgazer-calibrate',
-                    calibration_points: [
-                        [20,10], [20,50], [20,90],
-                        [50,10], [50,50], [50,90],
-                        [80,10], [80,50], [80,90]
-                    ]
-                };
-    timeline.push(calibration);            
-
-    var validation_instructions = {
-        type: 'html-keyboard-response',
-        stimulus: `<p>The following event will test the accuracy of our eye tracking. Please focus on the black dots as they appear. Press any key to begin.</p>`
-    };
-    timeline.push(validation_instructions);
-
-    var validation = {
-        type: 'webgazer-validate',
-                    validation_points: [
-                        [20,10], [20,50], [20,90],
-                        [50,10], [50,50], [50,90],
-                        [80,10], [80,50], [80,90]
-                    ]
-    };
-    timeline.push(validation);
     
     var conclusion = {
       type: 'html-keyboard-response',
@@ -495,10 +504,9 @@ timeline.push(mcGurkEnd);
 
     jsPsych.init({timeline: timeline, 
         on_finish: function(){
-          window.top.location.href= "https://app.prolific.co/submissions/complete?cc=57F910B7"
+          window.top.location.href= "https://app.prolific.co/submissions/complete?cc=6DB6BD87"
         },
     extensions: [{type: 'webgazer'}]
-    });
-
+    })
     </script>
 </html>
